@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630">
+  <defs>
+    <linearGradient id="bg-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#0a0f0f"/>
+      <stop offset="100%" style="stop-color:#0d1414"/>
+    </linearGradient>
+    <linearGradient id="text-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#14b8a6"/>
+      <stop offset="100%" style="stop-color:#06b6d4"/>
+    </linearGradient>
+  </defs>
+  
+  <!-- Background -->
+  <rect width="1200" height="630" fill="url(#bg-gradient)"/>
+  
+  <!-- Glow effect -->
+  <circle cx="300" cy="200" r="200" fill="#14b8a6" opacity="0.15" filter="blur(80px)"/>
+  <circle cx="900" cy="400" r="180" fill="#06b6d4" opacity="0.15" filter="blur(80px)"/>
+  
+  <!-- Icon -->
+  <text x="600" y="250" font-family="Arial, sans-serif" font-size="120" fill="url(#text-gradient)" text-anchor="middle">🎬</text>
+  
+  <!-- Title -->
+  <text x="600" y="380" font-family="Inter, Arial, sans-serif" font-size="80" font-weight="700" fill="#f0f5f5" text-anchor="middle">pyflix</text>
+  
+  <!-- Tagline -->
+  <text x="600" y="460" font-family="Inter, Arial, sans-serif" font-size="32" fill="#a0b0b0" text-anchor="middle">Python Torrent Streaming Library</text>
+  
+  <!-- Features -->
+  <text x="600" y="520" font-family="Inter, Arial, sans-serif" font-size="22" fill="#6b7b7b" text-anchor="middle">Sequential Download • MOOV Detection • HTTP Streaming</text>
+</svg>

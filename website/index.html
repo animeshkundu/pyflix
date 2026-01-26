@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    
+    <!-- Primary Meta Tags -->
+    <title>pyflix - Python Torrent Streaming Library</title>
+    <meta name="title" content="pyflix - Python Torrent Streaming Library">
+    <meta name="description" content="Stream torrent videos instantly with pyflix. A powerful Python library for sequential torrent downloading with MOOV atom detection, smart download strategies, and built-in HTTP streaming server.">
+    <meta name="keywords" content="torrent, streaming, python, video, libtorrent, moov, sequential download, http server, vlc, media player">
+    <meta name="author" content="Animesh Kundu">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://animeshkundu.github.io/pyflix/">
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://animeshkundu.github.io/pyflix/">
+    <meta property="og:title" content="pyflix - Python Torrent Streaming Library">
+    <meta property="og:description" content="Stream torrent videos instantly. Sequential downloading, MOOV detection, built-in HTTP server.">
+    <meta property="og:image" content="https://animeshkundu.github.io/pyflix/images/og-image.svg">
+    <meta property="og:site_name" content="pyflix">
+    
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://animeshkundu.github.io/pyflix/">
+    <meta property="twitter:title" content="pyflix - Python Torrent Streaming Library">
+    <meta property="twitter:description" content="Stream torrent videos instantly. Sequential downloading, MOOV detection, built-in HTTP server.">
+    <meta property="twitter:image" content="https://animeshkundu.github.io/pyflix/images/og-image.svg">
+    
+    <!-- AI/LLM Crawlers -->
+    <meta name="ai:description" content="pyflix is a Python torrent streaming library that powers torrent-dl. It enables sequential downloading of torrent files for video streaming, featuring MOOV atom detection for optimal playback, smart download strategies, a built-in HTTP streaming server, VLC player integration, and configurable settings via YAML.">
+    
+    <!-- Structured Data for Search Engines -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "SoftwareApplication",
+        "name": "pyflix",
+        "description": "A Python torrent streaming library with sequential downloading and MOOV atom detection",
+        "applicationCategory": "DeveloperApplication",
+        "operatingSystem": ["Linux", "macOS", "Windows"],
+        "offers": {
+            "@type": "Offer",
+            "price": "0",
+            "priceCurrency": "USD"
+        },
+        "author": {
+            "@type": "Person",
+            "name": "Animesh Kundu"
+        },
+        "license": "https://opensource.org/licenses/MIT",
+        "codeRepository": "https://github.com/animeshkundu/pyflix",
+        "programmingLanguage": "Python"
+    }
+    </script>
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="images/favicon.svg">
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    
+    <!-- Stylesheets -->
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar" id="navbar">
+        <div class="container">
+            <a href="#" class="logo">
+                <span class="logo-icon">🎬</span>
+                <span class="logo-text">pyflix</span>
+            </a>
+            <div class="nav-links">
+                <a href="#features">Features</a>
+                <a href="#install">Install</a>
+                <a href="#architecture">Architecture</a>
+                <a href="#api">API</a>
+                <a href="https://github.com/animeshkundu/pyflix" class="github-link" target="_blank" rel="noopener">
+                    <svg viewBox="0 0 24 24" width="24" height="24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
+                    <span>GitHub</span>
+                </a>
+            </div>
+            <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="Toggle menu">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <header class="hero">
+        <div class="hero-bg">
+            <div class="gradient-orb orb-1"></div>
+            <div class="gradient-orb orb-2"></div>
+            <div class="gradient-orb orb-3"></div>
+        </div>
+        <div class="container">
+            <div class="hero-badge">
+                <span class="badge-icon">🐍</span>
+                <span>Python Library</span>
+            </div>
+            <h1 class="hero-title">
+                Stream <span class="highlight">torrent videos</span> instantly
+            </h1>
+            <p class="hero-subtitle">
+                A powerful Python library for sequential torrent downloading with MOOV atom detection and built-in HTTP streaming.
+            </p>
+            
+            <!-- Code Demo -->
+            <div class="terminal-demo">
+                <div class="terminal-header">
+                    <div class="terminal-buttons">
+                        <span class="btn-close"></span>
+                        <span class="btn-minimize"></span>
+                        <span class="btn-maximize"></span>
+                    </div>
+                    <span class="terminal-title">Python</span>
+                </div>
+                <div class="terminal-body">
+                    <div class="terminal-line">
+                        <span class="keyword">from</span> <span class="module">pyflix.torrent</span> <span class="keyword">import</span> <span class="class-name">DownloadManager</span>
+                    </div>
+                    <div class="terminal-line">
+                        <span class="comment"># Initialize with magnet link</span>
+                    </div>
+                    <div class="terminal-line">
+                        <span class="variable">manager</span> <span class="operator">=</span> <span class="class-name">DownloadManager</span>(<span class="variable">magnet</span>, <span class="param">port</span><span class="operator">=</span><span class="number">8888</span>)
+                    </div>
+                    <div class="terminal-line">
+                        <span class="comment"># Start streaming!</span>
+                    </div>
+                    <div class="terminal-line">
+                        <span class="variable">manager</span>.<span class="method">start</span>()
+                    </div>
+                    <div class="terminal-line output">
+                        <span class="prompt">#</span> <span class="output-text">Serving video on http://localhost:8888</span>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Quick Install -->
+            <div class="quick-install">
+                <h3>Quick Install</h3>
+                <div class="install-tabs">
+                    <button class="tab-btn active" data-tab="pip">pip</button>
+                    <button class="tab-btn" data-tab="source">Source</button>
+                </div>
+                <div class="install-content">
+                    <div class="tab-panel active" id="pip">
+                        <div class="code-block">
+                            <code>pip install pyflix</code>
+                            <button class="copy-btn" data-copy="pip install pyflix" aria-label="Copy to clipboard">
+                                <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="tab-panel" id="source">
+                        <div class="code-block">
+                            <code>pip install git+https://github.com/animeshkundu/pyflix.git</code>
+                            <button class="copy-btn" data-copy="pip install git+https://github.com/animeshkundu/pyflix.git" aria-label="Copy to clipboard">
+                                <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <p class="install-note">Requires Python 3.9+ and libtorrent. <a href="#install">Full installation guide →</a></p>
+            </div>
+        </div>
+    </header>
+
+    <!-- Features Section -->
+    <section class="features" id="features">
+        <div class="container">
+            <div class="section-header">
+                <h2>Why choose <span class="highlight">pyflix</span></h2>
+                <p>Built for streaming, designed for simplicity</p>
+            </div>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">🎯</div>
+                    <h3>Smart Sequential Download</h3>
+                    <p>Intelligently prioritizes video pieces for immediate playback while downloading the rest in the background.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🎬</div>
+                    <h3>MOOV Atom Detection</h3>
+                    <p>Automatically detects and handles MP4 MOOV atoms, ensuring videos can be streamed before fully downloaded.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🌐</div>
+                    <h3>Built-in HTTP Server</h3>
+                    <p>Includes a threaded HTTP server with range request support, ready for VLC or any media player.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">⚙️</div>
+                    <h3>Configurable Strategy</h3>
+                    <p>Customize download strategies, priorities, and chunk sizes to match your network and storage.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">📺</div>
+                    <h3>Player Integration</h3>
+                    <p>Direct VLC integration out of the box, with support for custom player configurations.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🔧</div>
+                    <h3>YAML Configuration</h3>
+                    <p>Simple YAML-based configuration for settings, paths, limits, and player preferences.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Architecture Section -->
+    <section class="architecture" id="architecture">
+        <div class="container">
+            <div class="section-header">
+                <h2>How it <span class="highlight">works</span></h2>
+                <p>Clean architecture for reliable streaming</p>
+            </div>
+            <div class="architecture-diagram">
+                <div class="arch-flow">
+                    <div class="arch-item">
+                        <div class="arch-icon">🧲</div>
+                        <div class="arch-label">Magnet Link</div>
+                    </div>
+                    <div class="arch-arrow">→</div>
+                    <div class="arch-item">
+                        <div class="arch-icon">📦</div>
+                        <div class="arch-label">Download Manager</div>
+                    </div>
+                    <div class="arch-arrow">→</div>
+                    <div class="arch-item">
+                        <div class="arch-icon">🎯</div>
+                        <div class="arch-label">Strategy Engine</div>
+                    </div>
+                    <div class="arch-arrow">→</div>
+                    <div class="arch-item">
+                        <div class="arch-icon">🌐</div>
+                        <div class="arch-label">HTTP Server</div>
+                    </div>
+                    <div class="arch-arrow">→</div>
+                    <div class="arch-item">
+                        <div class="arch-icon">📺</div>
+                        <div class="arch-label">Media Player</div>
+                    </div>
+                </div>
+            </div>
+            <div class="components-grid">
+                <div class="component-card">
+                    <h4>Download Manager</h4>
+                    <p>Coordinates all torrent operations, manages session lifecycle, and exposes streaming APIs.</p>
+                    <code>torrent/__init__.py</code>
+                </div>
+                <div class="component-card">
+                    <h4>Strategy Engine</h4>
+                    <p>Implements DefaultStrategy for intelligent piece prioritization based on playback position.</p>
+                    <code>torrent/strategy.py</code>
+                </div>
+                <div class="component-card">
+                    <h4>MOOV Handler</h4>
+                    <p>Detects MP4 atom positions using qtfaststart to ensure streamability.</p>
+                    <code>torrent/moov.py</code>
+                </div>
+                <div class="component-card">
+                    <h4>HTTP Streamer</h4>
+                    <p>Threaded HTTP server with range request support for seamless video playback.</p>
+                    <code>utils/streamer.py</code>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- API Section -->
+    <section class="api" id="api">
+        <div class="container">
+            <div class="section-header">
+                <h2>Simple <span class="highlight">API</span></h2>
+                <p>Get streaming in minutes</p>
+            </div>
+            <div class="api-examples">
+                <div class="api-example">
+                    <h3>Basic Usage</h3>
+                    <div class="code-block-large">
+                        <pre><code><span class="keyword">from</span> <span class="module">pyflix.torrent</span> <span class="keyword">import</span> <span class="class-name">DownloadManager</span>
+
+<span class="comment"># Create manager with magnet link</span>
+<span class="variable">magnet</span> = <span class="string">"magnet:?xt=urn:btih:..."</span>
+<span class="variable">manager</span> = <span class="class-name">DownloadManager</span>(
+    <span class="variable">magnet</span>,
+    <span class="param">port</span>=<span class="number">8888</span>,
+    <span class="param">serve</span>=<span class="boolean">True</span>
+)
+
+<span class="comment"># Start downloading and serving</span>
+<span class="variable">manager</span>.<span class="method">start</span>()
+<span class="comment"># Video available at http://localhost:8888</span></code></pre>
+                    </div>
+                </div>
+                <div class="api-example">
+                    <h3>Custom Configuration</h3>
+                    <div class="code-block-large">
+                        <pre><code><span class="comment"># ~/.pyflix/settings.yaml</span>
+<span class="yaml-key">save_path</span>: <span class="string">"/downloads/torrents"</span>
+
+<span class="yaml-key">strategy</span>:
+  <span class="yaml-key">piece_st</span>: <span class="number">4</span>
+  <span class="yaml-key">last_piece_st</span>: <span class="number">4</span>
+  <span class="yaml-key">chunks_strat</span>: <span class="number">10</span>
+  <span class="yaml-key">always_sequential</span>: <span class="boolean">false</span>
+
+<span class="yaml-key">limits</span>:
+  <span class="yaml-key">upload</span>: <span class="number">0</span>  <span class="comment"># KB/s, 0 = unlimited</span>
+  <span class="yaml-key">download</span>: <span class="number">0</span>
+
+<span class="yaml-key">players</span>:
+  <span class="yaml-key">default</span>: <span class="string">"vlc"</span></code></pre>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Installation Section -->
+    <section class="install-detailed" id="install">
+        <div class="container">
+            <div class="section-header">
+                <h2>Installation <span class="highlight">Guide</span></h2>
+                <p>Get up and running in minutes</p>
+            </div>
+            <div class="install-steps">
+                <div class="install-step">
+                    <div class="step-number">1</div>
+                    <div class="step-content">
+                        <h3>Install Dependencies</h3>
+                        <p>pyflix requires libtorrent with Python bindings:</p>
+                        <div class="code-block">
+                            <code># Ubuntu/Debian
+sudo apt install python3-libtorrent
+
+# macOS (Homebrew)
+brew install libtorrent-rasterbar</code>
+                        </div>
+                    </div>
+                </div>
+                <div class="install-step">
+                    <div class="step-number">2</div>
+                    <div class="step-content">
+                        <h3>Install pyflix</h3>
+                        <p>Install via pip or from source:</p>
+                        <div class="code-block">
+                            <code># From PyPI
+pip install pyflix
+
+# From GitHub
+pip install git+https://github.com/animeshkundu/pyflix.git</code>
+                        </div>
+                    </div>
+                </div>
+                <div class="install-step">
+                    <div class="step-number">3</div>
+                    <div class="step-content">
+                        <h3>Verify Installation</h3>
+                        <p>Test that everything works:</p>
+                        <div class="code-block">
+                            <code>python -c "from pyflix.torrent import DownloadManager; print('✓ pyflix installed')"</code>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="cta">
+        <div class="container">
+            <h2>Ready to start <span class="highlight">streaming</span>?</h2>
+            <p>pyflix is open source and free to use</p>
+            <div class="cta-buttons">
+                <a href="https://github.com/animeshkundu/pyflix" class="btn btn-primary btn-lg" target="_blank" rel="noopener">
+                    <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
+                    View on GitHub
+                </a>
+                <a href="https://github.com/animeshkundu/torrent-dl" class="btn btn-outline btn-lg" target="_blank" rel="noopener">
+                    Try torrent-dl CLI →
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-brand">
+                    <a href="#" class="logo">
+                        <span class="logo-icon">🎬</span>
+                        <span class="logo-text">pyflix</span>
+                    </a>
+                    <p>Python torrent streaming library that powers <a href="https://github.com/animeshkundu/torrent-dl">torrent-dl</a>.</p>
+                </div>
+                <div class="footer-links">
+                    <div class="footer-column">
+                        <h4>Resources</h4>
+                        <ul>
+                            <li><a href="#features">Features</a></li>
+                            <li><a href="#install">Installation</a></li>
+                            <li><a href="#api">API Reference</a></li>
+                            <li><a href="https://github.com/animeshkundu/pyflix/tree/main/docs">Documentation</a></li>
+                        </ul>
+                    </div>
+                    <div class="footer-column">
+                        <h4>Project</h4>
+                        <ul>
+                            <li><a href="https://github.com/animeshkundu/pyflix">GitHub</a></li>
+                            <li><a href="https://github.com/animeshkundu/pyflix/issues">Issues</a></li>
+                            <li><a href="https://github.com/animeshkundu/pyflix/blob/main/LICENSE">License</a></li>
+                        </ul>
+                    </div>
+                    <div class="footer-column">
+                        <h4>Related</h4>
+                        <ul>
+                            <li><a href="https://github.com/animeshkundu/torrent-dl">torrent-dl</a></li>
+                            <li><a href="https://www.libtorrent.org/">libtorrent</a></li>
+                            <li><a href="https://github.com/danielgtaylor/qtfaststart">qtfaststart</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>Built with ❤️ by <a href="https://github.com/animeshkundu">Animesh Kundu</a></p>
+                <p>Released under the MIT License</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- JavaScript -->
+    <script src="js/main.js"></script>
+</body>
+</html>

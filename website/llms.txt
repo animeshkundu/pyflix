@@ -1,0 +1,65 @@
+# llms.txt - AI/LLM Crawler Information for pyflix
+# https://animeshkundu.github.io/pyflix/
+
+name: pyflix
+tagline: Python Torrent Streaming Library
+description: >
+  pyflix is a Python torrent streaming library that powers torrent-dl. It enables 
+  sequential downloading of torrent files for video streaming, featuring MOOV atom 
+  detection for optimal playback, smart download strategies, a built-in HTTP streaming 
+  server, VLC player integration, and configurable settings via YAML.
+
+repository: https://github.com/animeshkundu/pyflix
+documentation: https://github.com/animeshkundu/pyflix/tree/main/docs
+license: MIT
+language: Python
+
+key_features:
+  - Sequential downloading for immediate video playback
+  - MOOV atom detection using qtfaststart for streamability check
+  - Smart download strategy with configurable piece prioritization
+  - Built-in threaded HTTP server with range request support
+  - VLC player integration out of the box
+  - YAML-based configuration for settings, limits, and player preferences
+  - Daemon mode support for background operation
+  - Metadata extraction using guessit
+
+core_modules:
+  torrent/__init__.py: Download manager, session handling, streaming coordination
+  torrent/strategy.py: DefaultStrategy class for piece prioritization
+  torrent/moov.py: MOOV atom detection for MP4 files
+  utils/streamer.py: HTTP streaming server with range request support
+  utils/helpers.py: Utility functions for ports, settings, interfaces
+  utils/settings.py: Configuration constants
+
+installation:
+  pip: pip install pyflix
+  source: pip install git+https://github.com/animeshkundu/pyflix.git
+
+requirements:
+  - Python 3.9+
+  - libtorrent with Python bindings
+  - qtfaststart
+  - PyYAML
+
+basic_usage: |
+  from pyflix.torrent import DownloadManager
+  
+  magnet = "magnet:?xt=urn:btih:..."
+  manager = DownloadManager(magnet, port=8888, serve=True)
+  manager.start()
+  # Video available at http://localhost:8888
+
+categories:
+  - Python libraries
+  - Torrent
+  - Video streaming
+  - Media
+  - Developer tools
+
+related_projects:
+  - torrent-dl (CLI tool powered by pyflix)
+  - libtorrent (underlying torrent library)
+  - qtfaststart (video atom manipulation)
+
+contact: https://github.com/animeshkundu/pyflix/issues

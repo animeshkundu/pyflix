@@ -1,30 +1,34 @@
 # Claude Agents Configuration
 
-This directory is a placeholder for Claude-specific agent configurations.
+This directory contains specialized Claude agent configurations for the pyflix repository.
 
-## Purpose
+## Available Agents
 
-This directory will contain configurations specific to Claude AI agents working on this codebase:
-- Custom system prompts
-- Task-specific configurations
-- Tool definitions
-- Workflow automations
+### Code Editor Agent (`code-editor.md`)
+Specialized for Python code editing with pyflix-specific conventions.
 
-## Current Status
+### Code Reviewer Agent (`reviewer.md`)
+Reviews code changes for quality, security, and adherence to standards.
 
-**Placeholder** - Ready for Claude agent configurations.
+### Documentation Agent (`documenter.md`)
+Maintains and generates documentation following the docs-first approach.
 
-## Future Structure (Anticipated)
+### Research Agent (`researcher.md`)
+Conducts web research for libraries, best practices, and solutions.
 
-```
-agents/
-├── code-editor.md       # Code editing agent configuration
-├── reviewer.md          # Code review agent configuration
-├── documenter.md        # Documentation agent configuration
-└── researcher.md        # Research agent configuration
-```
+## Usage
+
+Claude automatically loads these configurations based on the task context. Each agent has specific expertise and follows the protocols defined in `docs/agent-instructions/`.
+
+## Configuration Format
+
+Each `.md` file contains:
+- Agent identity and specialization
+- Key responsibilities
+- Pyflix-specific guidelines
+- Integration with docs/
 
 ## Related Documentation
 
-- See `docs/agent-instructions/` for current agent protocols
-- See `claude.md` in repository root for base Claude instructions
+- See `docs/agent-instructions/` for shared protocols
+- See `claude.md` in repository root for base configuration
