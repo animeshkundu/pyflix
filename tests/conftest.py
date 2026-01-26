@@ -27,7 +27,8 @@ def mock_settings(monkeypatch):
     def mock_get_settings():
         return MockSettings()
     
-    monkeypatch.setattr('utils.helpers.get_settings', mock_get_settings)
+    # Use the actual import path from the codebase (Pyflix.utils.helpers)
+    monkeypatch.setattr('Pyflix.utils.helpers.get_settings', mock_get_settings)
     return MockSettings()
 
 

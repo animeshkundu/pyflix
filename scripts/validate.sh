@@ -29,6 +29,23 @@ LINT_ONLY=false
 TEST_ONLY=false
 VERBOSE=false
 
+# Help function
+show_help() {
+    cat << 'EOF'
+Usage: ./scripts/validate.sh [options]
+
+Options:
+    --lint-only    Run only linting checks
+    --test-only    Run only tests
+    --verbose      Show detailed output
+    --help         Show this help message
+
+Exit codes:
+    0 - All checks passed
+    1 - One or more checks failed
+EOF
+}
+
 # Parse arguments
 while [[ $# -gt 0 ]]; do
     case $1 in
@@ -45,7 +62,7 @@ while [[ $# -gt 0 ]]; do
             shift
             ;;
         --help)
-            head -20 "$0" | tail -18
+            show_help
             exit 0
             ;;
         *)
