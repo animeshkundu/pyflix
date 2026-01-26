@@ -32,7 +32,7 @@ class DownloadManager(object):
     def __init__(self, magnet, port=None, serve=False, player=None, save_path=None):
         self.settings = get_settings()
         self.magnet = magnet
-        self.save_path = save_path if save_path else self.settings.save_path 
+        self.save_path = save_path if save_path else self.settings.save_path
         if port is None:
             port = DEFAULT_PORT
         port = int(port)
@@ -238,6 +238,7 @@ def main():
 
     manager = DownloadManager(args.magnet, port=args.port, serve=args.serve, save_path=args.download)
     manager.start()
+
 
 if __name__ == "__main__":
     main()

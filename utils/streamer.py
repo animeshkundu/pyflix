@@ -16,7 +16,7 @@ log = logging.getLogger('pyflix.utils.stream_server')
 
 
 class ThreadedHTTPServer(ThreadingMixIn, HTTPServer):
-        pass
+    pass
 
 
 class VideoHandler(SimpleHTTPRequestHandler):
@@ -25,7 +25,7 @@ class VideoHandler(SimpleHTTPRequestHandler):
     def handle_one_request(self, *args, **kwargs):
         try:
             return SimpleHTTPRequestHandler.handle_one_request(self, *args, **kwargs)
-        except:
+        except Exception:
             pass
 
     def status(self):
@@ -108,7 +108,7 @@ class VideoHandler(SimpleHTTPRequestHandler):
                 self.headers.getheader("Range"), total_length)
         except InvalidRangeHeader:
             log.warning("Range header parsing failed, "
-                            "serving complete file")
+                        "serving complete file")
             self.range_from = self.range_to = None
 
         if self.range_from is not None or self.range_to is not None:
