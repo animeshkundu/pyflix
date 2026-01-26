@@ -80,4 +80,4 @@ Link to ADR if one exists.
 
 | Document | Type | Date |
 |----------|------|------|
-| (No history documents yet) | - | - |
+| [2026-01-26-ai-scaffolding.md](./2026-01-26-ai-scaffolding.md) | Handoff | 2026-01-26 |

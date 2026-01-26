@@ -67,4 +67,4 @@ Examples:
 
 | Spec | Category | Status | Last Updated |
 |------|----------|--------|--------------|
-| (No specifications yet) | - | - | - |
+| [core-torrent-streaming.md](./core-torrent-streaming.md) | Feature | Implemented | 2026-01-26 |

@@ -42,3 +42,4 @@ Where `NNNN` is a 4-digit sequence number (e.g., `0001-use-python-3.md`).
 | ADR | Title | Status | Date |
 |-----|-------|--------|------|
 | [0000](./0000-template.md) | ADR Template | Template | - |
+| [0001](./0001-ai-enabled-structure.md) | AI-Enabled Repository Structure | Accepted | 2026-01-26 |
