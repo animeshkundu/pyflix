@@ -1,12 +1,10 @@
 import logging
 import re
+from http.server import HTTPServer, SimpleHTTPRequestHandler
 from json import dumps
 from os import fstat
+from socketserver import ThreadingMixIn
 from time import sleep
-
-from BaseHTTPServer import HTTPServer
-from SimpleHTTPServer import SimpleHTTPRequestHandler
-from SocketServer import ThreadingMixIn
 
 from Pyflix.utils.constants import STATES
 from Pyflix.utils.settings import WAIT_FOR_IT
@@ -105,7 +103,7 @@ class VideoHandler(SimpleHTTPRequestHandler):
         fs = fstat(f.fileno())
         total_length = fs[6]
         try:
-            self.range_from, self.range_to = parse_range_header(self.headers.getheader("Range"), total_length)
+            self.range_from, self.range_to = parse_range_header(self.headers.get("Range"), total_length)
         except InvalidRangeHeader:
             log.warning("Range header parsing failed, " "serving complete file")
             self.range_from = self.range_to = None
