@@ -1,5 +1,5 @@
 altasetting==0.1.1
-babelfish==0.5.5
+babelfish>=0.6.0
 blessed>=1.20.0
 colorama>=0.4.6
 docutils>=0.20

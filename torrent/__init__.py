@@ -1,5 +1,6 @@
 from __future__ import division
 
+import _thread as thread
 import argparse
 import logging
 from datetime import datetime, timedelta
@@ -7,8 +8,7 @@ from os import _exit
 from os.path import exists, join
 from time import sleep
 
-import thread
-from blessings import Terminal
+from blessed import Terminal
 from colorama import Fore
 from guessit import guessit
 from libtorrent import add_magnet_uri, session, storage_mode_t
