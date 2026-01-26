@@ -1,22 +1,20 @@
-import os
 import logging
+import os
 import signal
 import socket
-
-from daemon import DaemonContext
 from datetime import datetime
 from os import mkdir
-from os.path import getmtime, exists, dirname, join
+from os.path import dirname, exists, getmtime, join
 from shutil import copyfile
 
 from altasetting import Settings
-from netifaces import interfaces, ifaddresses
-from ojota import set_data_source
+from daemon import DaemonContext
 from lockfile import FileLock as Lock
-
+from netifaces import ifaddresses, interfaces
+from ojota import set_data_source
 
 LOCKFILE = "/tmp/pyflix"
-log = logging.getLogger('pyflix.utils.helpers')
+log = logging.getLogger("pyflix.utils.helpers")
 
 
 def get_settings():
@@ -33,7 +31,7 @@ def get_settings():
 
 def get_free_port():
     socket_ = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    socket_.bind(('localhost', 0))
+    socket_.bind(("localhost", 0))
     addr, port = socket_.getsockname()
     socket_.close()
     return port
@@ -43,7 +41,7 @@ def is_port_free(port):
     free = True
     socket_ = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     try:
-        socket_.bind(('localhost', port))
+        socket_.bind(("localhost", port))
     except socket.error:
         free = False
     socket_.close()
@@ -56,11 +54,13 @@ def get_interface():
         addresses = ifaddresses(ifaceName)
         for address in addresses.values():
             for item in address:
-                if item.get('netmask') is not None and \
-                        not item['addr'].startswith("127") and \
-                        not item['addr'].startswith(":") and \
-                        len(item['addr']) < 17:
-                    return item['addr']
+                if (
+                    item.get("netmask") is not None
+                    and not item["addr"].startswith("127")
+                    and not item["addr"].startswith(":")
+                    and len(item["addr"]) < 17
+                ):
+                    return item["addr"]
 
 
 def is_process_running(process_id):
@@ -74,18 +74,16 @@ def is_process_running(process_id):
 def daemonize(args, callback):
     with DaemonContext():
         from Pyflix.utils.logger import log_set_up
+
         log_set_up(True)
-        log = logging.getLogger('pyflix.daemon')
+        log = logging.getLogger("pyflix.daemon")
         log.info("running daemon")
         create_process = False
-        lock = Lock(LOCKFILE, os.getpid(), args.name, args.sea_ep[0],
-                    args.sea_ep[1], args.port)
+        lock = Lock(LOCKFILE, os.getpid(), args.name, args.sea_ep[0], args.sea_ep[1], args.port)
         if lock.is_locked():
             log.debug("lock active")
             lock_pid = lock.get_pid()
-            if not lock.is_same_file(args.name, args.sea_ep[0],
-                                     args.sea_ep[1]) \
-                    or not is_process_running(lock_pid):
+            if not lock.is_same_file(args.name, args.sea_ep[0], args.sea_ep[1]) or not is_process_running(lock_pid):
                 try:
                     log.debug("killing process %s" % lock_pid)
                     os.kill(lock_pid, signal.SIGQUIT)

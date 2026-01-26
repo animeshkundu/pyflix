@@ -1,12 +1,8 @@
 import logging
-
-from blessings import Terminal
 from os import system
-from time import sleep
 
-from Pyflix.utils.helpers import get_interface
+log = logging.getLogger("pyflix.utils.output")
 
-log = logging.getLogger('pyflix.utils.output')
 
 class Output(object):
     def __init__(self, stream_url, parent):

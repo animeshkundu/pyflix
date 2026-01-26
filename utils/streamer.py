@@ -1,22 +1,19 @@
-import re
 import logging
-
-from SocketServer import ThreadingMixIn
-from BaseHTTPServer import HTTPServer
-from SimpleHTTPServer import SimpleHTTPRequestHandler
-
+import re
+from http.server import HTTPServer, SimpleHTTPRequestHandler
 from json import dumps
 from os import fstat
+from socketserver import ThreadingMixIn
 from time import sleep
 
 from Pyflix.utils.constants import STATES
 from Pyflix.utils.settings import WAIT_FOR_IT
 
-log = logging.getLogger('pyflix.utils.stream_server')
+log = logging.getLogger("pyflix.utils.stream_server")
 
 
 class ThreadedHTTPServer(ThreadingMixIn, HTTPServer):
-        pass
+    pass
 
 
 class VideoHandler(SimpleHTTPRequestHandler):
@@ -25,7 +22,7 @@ class VideoHandler(SimpleHTTPRequestHandler):
     def handle_one_request(self, *args, **kwargs):
         try:
             return SimpleHTTPRequestHandler.handle_one_request(self, *args, **kwargs)
-        except:
+        except Exception:
             pass
 
     def status(self):
@@ -34,12 +31,14 @@ class VideoHandler(SimpleHTTPRequestHandler):
         self.send_header("Content-Type", "application/json")
         self.end_headers()
         manager = self.manager
-        dict_ = {"file": manager.video_file,
-                 "elapsed": manager.elapsed_time(),
-                 "rates": manager.rates(),
-                 "state": STATES[manager.status.state],
-                 "peers": manager.status.num_peers,
-                 "streaming": manager.streaming}
+        dict_ = {
+            "file": manager.video_file,
+            "elapsed": manager.elapsed_time(),
+            "rates": manager.rates(),
+            "state": STATES[manager.status.state],
+            "peers": manager.status.num_peers,
+            "streaming": manager.streaming,
+        }
         data = dumps(dict_)
         self.wfile.write(data)
 
@@ -70,14 +69,14 @@ class VideoHandler(SimpleHTTPRequestHandler):
         def is_block_available(block_number):
             status = self.manager.handle.status()
             pieces = status.pieces
-            return all(pieces[block_number:block_number+3])
+            return all(pieces[block_number : block_number + 3])
 
         in_file.seek(self.range_from)
         length = get_piece_length()
 
         bytes_copied = 0
         blocks = get_blocks_for_range(self.range_from, self.range_to)
-        for block_number in range(blocks[0], blocks[1]+1):
+        for block_number in range(blocks[0], blocks[1] + 1):
             if not is_block_available(block_number):
                 log.debug("requesting block %s" % block_number)
                 self.manager.strategy.block_requested(block_number)
@@ -96,7 +95,7 @@ class VideoHandler(SimpleHTTPRequestHandler):
     def send_head(self):
         path = self.manager.get_video_path()
         try:
-            f = open(path, 'rb')
+            f = open(path, "rb")
         except IOError:
             self.send_error(404, "File not found")
             return None
@@ -104,11 +103,9 @@ class VideoHandler(SimpleHTTPRequestHandler):
         fs = fstat(f.fileno())
         total_length = fs[6]
         try:
-            self.range_from, self.range_to = parse_range_header(
-                self.headers.getheader("Range"), total_length)
+            self.range_from, self.range_to = parse_range_header(self.headers.get("Range"), total_length)
         except InvalidRangeHeader:
-            log.warning("Range header parsing failed, "
-                            "serving complete file")
+            log.warning("Range header parsing failed, " "serving complete file")
             self.range_from = self.range_to = None
 
         if self.range_from is not None or self.range_to is not None:
@@ -119,21 +116,16 @@ class VideoHandler(SimpleHTTPRequestHandler):
             self.send_response(200)
             self.send_header("Accept-Ranges", "bytes")
         guess = self.manager.guess(path)
-        self.send_header("Content-Type", guess['mimetype'])
-        log.debug("mime type is %s" % guess['mimetype'])
+        self.send_header("Content-Type", guess["mimetype"])
+        log.debug("mime type is %s" % guess["mimetype"])
         log.debug("range %s to %s" % (self.range_from, self.range_to))
         if self.range_from is not None or self.range_to is not None:
             # TODO: Should also check that range is within the file size
-            self.send_header("Content-Range",
-                             "bytes %d-%d/%d" % (self.range_from,
-                                                 self.range_to,
-                                                 total_length))
-            self.send_header("Content-Length",
-                             (1 + self.range_to - self.range_from))
+            self.send_header("Content-Range", "bytes %d-%d/%d" % (self.range_from, self.range_to, total_length))
+            self.send_header("Content-Length", (1 + self.range_to - self.range_from))
         else:
             self.send_header("Content-Length", str(total_length))
-        self.send_header("Last-Modified",
-                         self.date_time_string(fs.st_mtime))
+        self.send_header("Last-Modified", self.date_time_string(fs.st_mtime))
         self.end_headers()
         return f
 
@@ -154,7 +146,7 @@ class InvalidRangeHeader(Exception):
 def serve_file(manager):
     print("serving on http://localhost:%s" % manager.port)
     log.info("serving on http://localhost:%s" % manager.port)
-    server_address = ('0.0.0.0', manager.port)
+    server_address = ("0.0.0.0", manager.port)
     httpd = ThreadedHTTPServer(server_address, VideoHandler)
     manager.httpd = httpd
     VideoHandler.manager = manager
@@ -165,10 +157,8 @@ def parse_range_header(range_header, total_length):
     if range_header is None or range_header == "":
         return (None, None)
     if not range_header.startswith("bytes="):
-        log.error("Don't know how to parse Range: %s [1]" %
-                  (range_header))
-        raise InvalidRangeHeader("Don't know how to parse non-bytes Range: %s" %
-                                 (range_header))
+        log.error("Don't know how to parse Range: %s [1]" % (range_header))
+        raise InvalidRangeHeader("Don't know how to parse non-bytes Range: %s" % (range_header))
     regex = re.compile(r"^bytes=(\d*)\-(\d*)$")
     rangething = regex.search(range_header)
     if rangething:
@@ -185,7 +175,7 @@ def parse_range_header(range_header, total_length):
                 final_bytes = int(r2)
             except ValueError:
                 raise InvalidRangeHeader("Invalid trailing range")
-            return (total_length-final_bytes, total_length - 1)
+            return (total_length - final_bytes, total_length - 1)
 
         try:
             from_val = int(r1)
@@ -200,5 +190,4 @@ def parse_range_header(range_header, total_length):
         else:
             return (from_val, total_length - 1)
     else:
-        raise InvalidRangeHeader("Don't know how to parse Range: %s" %
-                                 (range_header))
+        raise InvalidRangeHeader("Don't know how to parse Range: %s" % (range_header))

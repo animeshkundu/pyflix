@@ -3,7 +3,7 @@ import logging
 from Pyflix.torrent.moov import have_moov
 from Pyflix.utils.helpers import get_settings
 
-log = logging.getLogger('pyflix.torrent.strategy')
+log = logging.getLogger("pyflix.torrent.strategy")
 
 
 class DefaultStrategy(object):
@@ -37,9 +37,9 @@ class DefaultStrategy(object):
         status = self.handle.status()
         pieces = status.pieces
         last_piece = len(status.pieces)
-        first_n = pieces[:self.piece_st]
+        first_n = pieces[: self.piece_st]
         if self.download_lasts:
-            last_n = pieces[-self.last_piece_st:]
+            last_n = pieces[-self.last_piece_st :]
         else:
             last_n = []
         if all(first_n) and all(last_n):
@@ -71,8 +71,7 @@ class DefaultStrategy(object):
 
                 self.piece_st *= 2
                 self.last_piece_st *= 2
-                log.debug("piece_st = %s last_piece_st %s",
-                          self.piece_st, self.last_piece_st)
+                log.debug("piece_st = %s last_piece_st %s", self.piece_st, self.last_piece_st)
                 self.download_lasts = True
 
     def reset_priorities(self):
@@ -96,7 +95,7 @@ class DefaultStrategy(object):
         last_chunks = first_block + self.chunks_strat * 2
         if last_chunks > last_piece:
             last_chunks = last_piece
-        for i in range(first_block+self.chunks_strat, last_chunks):
+        for i in range(first_block + self.chunks_strat, last_chunks):
             self.handle.piece_priority(i, 3)
 
         self.piece_st = first_block + self.chunks_strat
