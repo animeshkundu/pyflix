@@ -55,13 +55,25 @@ jobs:
           python-version: ${{ matrix.python-version }}
           cache: 'pip'
 
+      - name: Install system dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y python3-libtorrent
+
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
           pip install -r requirements.txt
           pip install pytest pytest-cov
+          # Try to install libtorrent from pip, fall back gracefully
+          pip install libtorrent || echo "Using system libtorrent or tests will mock it"
+
+      - name: Create Pyflix symlink for imports
+        run: ln -s . Pyflix
 
       - name: Run tests with coverage
+        env:
+          PYTHONPATH: ${{ github.workspace }}
         run: pytest tests/ --cov=torrent --cov=utils --cov-report=xml --cov-report=term-missing
 
       - name: Upload coverage to Codecov
@@ -122,12 +134,24 @@ jobs:
           python-version: '3.11'
           cache: 'pip'
 
+      - name: Install system dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y python3-libtorrent
+
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
           pip install -r requirements.txt
+          # Try to install libtorrent from pip, fall back to system package
+          pip install libtorrent || echo "Using system libtorrent"
+
+      - name: Create Pyflix symlink for imports
+        run: ln -s . Pyflix
 
       - name: Verify imports work
+        env:
+          PYTHONPATH: ${{ github.workspace }}
         run: |
           python -c "from torrent.moov import have_moov; print('torrent.moov: OK')"
           python -c "from torrent.strategy import DefaultStrategy; print('torrent.strategy: OK')"

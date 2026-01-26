@@ -12,6 +12,7 @@ from blessed import Terminal
 from colorama import Fore
 from guessit import guessit
 from libtorrent import add_magnet_uri, session, storage_mode_t
+
 from Pyflix.torrent.strategy import DefaultStrategy
 from Pyflix.utils.constants import STATES
 from Pyflix.utils.helpers import get_free_port, get_settings, is_port_free

@@ -5,10 +5,11 @@ from os import fstat
 from time import sleep
 
 from BaseHTTPServer import HTTPServer
-from Pyflix.utils.constants import STATES
-from Pyflix.utils.settings import WAIT_FOR_IT
 from SimpleHTTPServer import SimpleHTTPRequestHandler
 from SocketServer import ThreadingMixIn
+
+from Pyflix.utils.constants import STATES
+from Pyflix.utils.settings import WAIT_FOR_IT
 
 log = logging.getLogger("pyflix.utils.stream_server")
 

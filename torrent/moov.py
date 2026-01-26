@@ -1,8 +1,9 @@
 import logging
 
-from Pyflix.utils.settings import SKIP_MOOV
 from qtfaststart.exceptions import FastStartException
 from qtfaststart.processor import get_index
+
+from Pyflix.utils.settings import SKIP_MOOV
 
 log = logging.getLogger("pyflix.utils.helpers")
 
