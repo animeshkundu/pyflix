@@ -1,11 +1,10 @@
 import logging
 
-from qtfaststart.processor import get_index
-from qtfaststart.exceptions import FastStartException
-
 from Pyflix.utils.settings import SKIP_MOOV
+from qtfaststart.exceptions import FastStartException
+from qtfaststart.processor import get_index
 
-log = logging.getLogger('pyflix.utils.helpers')
+log = logging.getLogger("pyflix.utils.helpers")
 
 
 def have_moov(video_file):
@@ -13,13 +12,12 @@ def have_moov(video_file):
         atoms = {}
         log.info("Checking moov data of %s", video_file)
         try:
-            atom_data = get_index(open(video_file, 'rb'))
+            atom_data = get_index(open(video_file, "rb"))
             for atom in atom_data:
                 atoms[atom.name] = atom.position
-            log.debug("moov:%(moov)s mdat:%(mdat)s ftyp:%(ftyp)s free:%(free)s",
-                      atoms)
+            log.debug("moov:%(moov)s mdat:%(mdat)s ftyp:%(ftyp)s free:%(free)s", atoms)
 
-            if atoms['moov'] > atoms['mdat']:
+            if atoms["moov"] > atoms["mdat"]:
                 log.info("moov atom after mdat")
                 return True, "after_mdat"
             else:

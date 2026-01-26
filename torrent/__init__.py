@@ -1,28 +1,26 @@
 from __future__ import division
 
 import argparse
-import thread
 import logging
-
-from os import _exit
-from os.path import join, exists
-from time import sleep
 from datetime import datetime, timedelta
+from os import _exit
+from os.path import exists, join
+from time import sleep
 
+import thread
 from blessings import Terminal
 from colorama import Fore
 from guessit import guessit
 from libtorrent import add_magnet_uri, session, storage_mode_t
-
-from Pyflix.utils.constants import STATES
 from Pyflix.torrent.strategy import DefaultStrategy
-from Pyflix.utils.helpers import is_port_free, get_free_port, get_settings
+from Pyflix.utils.constants import STATES
+from Pyflix.utils.helpers import get_free_port, get_settings, is_port_free
 from Pyflix.utils.logger import log_set_up
 from Pyflix.utils.output import VLCOutput
-from Pyflix.utils.settings import DEBUG, WAIT_FOR_IT, DEFAULT_PORT
+from Pyflix.utils.settings import DEBUG, DEFAULT_PORT, WAIT_FOR_IT
 from Pyflix.utils.streamer import serve_file
 
-log = logging.getLogger('pyflix.torrent')
+log = logging.getLogger("pyflix.torrent")
 term = Terminal()
 
 
@@ -39,8 +37,7 @@ class DownloadManager(object):
         if not is_port_free(port):
             port = get_free_port()
 
-        log.info("[Magnet]: %s [Port]: %s [Serve]: %s "
-                 "[Player] %s ", magnet, port, serve, player)
+        log.info("[Magnet]: %s [Port]: %s [Serve]: %s " "[Player] %s ", magnet, port, serve, player)
 
         self.port = port
         self.serve = serve
@@ -65,7 +62,7 @@ class DownloadManager(object):
         params = {
             "save_path": self.save_path,
             "allocation": storage_mode_t.storage_mode_sparse,
-            }
+        }
         self.session = session()
         self.handle = add_magnet_uri(self.session, str(self.magnet), params)
 
@@ -95,7 +92,7 @@ class DownloadManager(object):
                     print("Torrent metadata not available")
                     return
                 else:
-                    sleep(.5)
+                    sleep(0.5)
             log.info("Starting download")
             self.strategy.initial()
 
@@ -156,7 +153,7 @@ class DownloadManager(object):
             self.streaming = True
             pieces = self.status.pieces
             self._served_blocks = [False for i in range(len(pieces))]
-            self.stream_th = thread.start_new_thread(self.callback, (self, ))
+            self.stream_th = thread.start_new_thread(self.callback, (self,))
             if not self.serve:
                 params = ()
                 self.player_th = thread.start_new_thread(self.output, params)
@@ -166,7 +163,7 @@ class DownloadManager(object):
 
     def defrag(self):
         download_queue = self.handle.get_download_queue()
-        downloading = [piece['piece_index'] for piece in download_queue]
+        downloading = [piece["piece_index"] for piece in download_queue]
         numerales = ""
         pieces = self.status.pieces
         for i, piece in enumerate(pieces):
@@ -184,12 +181,11 @@ class DownloadManager(object):
     def screen_data(self, defrag=False):
         status = self.status
         text = Fore.WHITE
-        text += term.bold('Pyflix\n\n')
+        text += term.bold("Pyflix\n\n")
         text += STATES[status.state]
-        text += term.yellow(' %.2f%% complete ' % (status.progress * 100))
+        text += term.yellow(" %.2f%% complete " % (status.progress * 100))
         rates = self.rates()
-        rate_text = '(down: %.1f kB/s up: %.1f kB/s peers: %d)\n' % \
-                    (rates[0], rates[1], status.num_peers)
+        rate_text = "(down: %.1f kB/s up: %.1f kB/s peers: %d)\n" % (rates[0], rates[1], status.num_peers)
         text += term.green(rate_text)
 
         if defrag:
@@ -229,7 +225,7 @@ def main():
     log_set_up()
     parser = argparse.ArgumentParser()
 
-    parser.add_argument("magnet", nargs='?', default=None)
+    parser.add_argument("magnet", nargs="?", default=None)
     parser.add_argument("--serve", action="store_true")
     parser.add_argument("--port", "-p", default="8888")
     parser.add_argument("--download", "-d", default=None)

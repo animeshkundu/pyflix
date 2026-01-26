@@ -30,7 +30,7 @@ jobs:
           pip install flake8 black isort
 
       - name: Run flake8
-        run: flake8 torrent utils --max-line-length=120 --extend-ignore=E501
+        run: flake8 torrent utils --max-line-length=120 --extend-ignore=E501,E203
 
       - name: Check formatting with black
         run: black --check torrent utils --line-length=120

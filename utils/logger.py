@@ -1,6 +1,5 @@
 import logging
 import sys
-
 from logging.handlers import RotatingFileHandler
 from os import mkdir
 from os.path import exists
@@ -16,8 +15,7 @@ def log_set_up(verbose=False):
 
     logfile = "%s/pyflix.log" % (settings.save_path)
     handler = RotatingFileHandler(logfile, maxBytes=1e6, backupCount=10)
-    formatter = logging.Formatter("%(asctime)s  %(name)-22s  "
-                                  "%(levelname)-8s %(message)s")
+    formatter = logging.Formatter("%(asctime)s  %(name)-22s  " "%(levelname)-8s %(message)s")
     handler.setFormatter(formatter)
     logger = logging.getLogger()
     logger.addHandler(handler)
@@ -32,8 +30,8 @@ def log_set_up(verbose=False):
 def add_stdout_handler(logger, formatter):
     try:
         from rainbow_logging_handler import RainbowLoggingHandler
-        handler = RainbowLoggingHandler(sys.stderr, color_funcName=(
-            'black', 'black', True))
+
+        handler = RainbowLoggingHandler(sys.stderr, color_funcName=("black", "black", True))
     except ImportError:
         handler = logging.StreamHandler()
         pass

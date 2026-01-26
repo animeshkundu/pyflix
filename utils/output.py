@@ -1,8 +1,7 @@
 import logging
-
 from os import system
 
-log = logging.getLogger('pyflix.utils.output')
+log = logging.getLogger("pyflix.utils.output")
 
 
 class Output(object):
